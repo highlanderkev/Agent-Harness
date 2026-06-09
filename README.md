@@ -17,6 +17,13 @@ Run the example:
 python examples/simple_agent.py
 ```
 
+Run the Streamlit UI:
+
+```bash
+pip install streamlit
+streamlit run streamlit_app.py
+```
+
 Run tests:
 
 ```bash
