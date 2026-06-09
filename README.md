@@ -14,12 +14,11 @@ Generic starter project for building and running simple agent workflows.
 Run the example:
 
 ```bash
-python /home/runner/work/Agent-Harness/Agent-Harness/highlanderkev/Agent-Harness/examples/simple_agent.py
+python examples/simple_agent.py
 ```
 
 Run tests:
 
 ```bash
-cd /home/runner/work/Agent-Harness/Agent-Harness/highlanderkev/Agent-Harness
 python -m unittest discover -s tests -v
 ```
