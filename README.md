@@ -5,7 +5,8 @@ Generic starter project for building and running simple agent workflows.
 ## Project structure
 
 - `src/agent.py` - base `Agent` interface
-- `src/harness.py` - small harness runner
+- `src/governance.py` - execution loop governance components (E/T/C/S/L/V)
+- `src/harness.py` - harness runtime wired to governance components
 - `examples/simple_agent.py` - runnable starter example
 - `tests/test_harness.py` - focused harness behavior tests
 
