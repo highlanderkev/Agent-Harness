@@ -1,4 +1,5 @@
 import unittest
+from os import chdir, getcwd
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
@@ -36,6 +37,21 @@ class TestHarness(unittest.TestCase):
             self.assertEqual(saved_state["input"], "hello")
             self.assertEqual(saved_state["output"], "HELLO")
             self.assertGreaterEqual(len(saved_state["context"]), 2)
+
+    def test_does_not_persist_state_by_default(self):
+        with TemporaryDirectory() as tmp_dir:
+            current_dir = getcwd()
+            try:
+                chdir(tmp_dir)
+                harness = Harness(UpperAgent())
+
+                result = harness.run("hello")
+
+                self.assertEqual(result, "HELLO")
+                self.assertFalse((Path(tmp_dir) / ".agent_harness_state.json").exists())
+                self.assertEqual(harness.state_store.load(), {})
+            finally:
+                chdir(current_dir)
 
     def test_runs_lifecycle_hooks(self):
         checkpoints: list[str] = []

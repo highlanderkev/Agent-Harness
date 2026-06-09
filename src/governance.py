@@ -22,7 +22,7 @@ class HarnessConfig:
     max_steps: int = 7
     context_window_size: int = 10
     offload_threshold: int = 2000
-    state_path: str = ".agent_harness_state.json"
+    state_path: str | None = None
 
 
 class ToolRegistry:
@@ -67,10 +67,12 @@ class ContextManager:
 
 
 class StateStore:
-    def __init__(self, state_path: str) -> None:
-        self._path = Path(state_path)
+    def __init__(self, state_path: str | None) -> None:
+        self._path = Path(state_path) if state_path else None
 
     def save(self, state: dict[str, Any]) -> None:
+        if self._path is None:
+            return
         self._path.parent.mkdir(parents=True, exist_ok=True)
         with NamedTemporaryFile("w", delete=False, dir=str(self._path.parent), encoding="utf-8") as tmp_file:
             json.dump(state, tmp_file, indent=2, sort_keys=True)
@@ -78,6 +80,8 @@ class StateStore:
         Path(tmp_name).replace(self._path)
 
     def load(self) -> dict[str, Any]:
+        if self._path is None:
+            return {}
         if not self._path.exists():
             return {}
         return json.loads(self._path.read_text(encoding="utf-8"))
