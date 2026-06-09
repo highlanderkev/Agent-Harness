@@ -46,8 +46,9 @@ class Harness:
                 if step_count >= self.config.max_steps:
                     raise RuntimeError("Max steps exceeded before termination.")
 
-                self.lifecycle_hooks.on_before_step(self.state)
-                self.evaluator.record("state.enter", self.state, {"step": step_count})
+                current_state = self.state
+                self.lifecycle_hooks.on_before_step(current_state)
+                self.evaluator.record("state.enter", current_state, {"step": step_count})
 
                 if self.state == HarnessState.IDLE:
                     self.state = HarnessState.OBSERVING
@@ -75,8 +76,8 @@ class Harness:
                 else:
                     raise RuntimeError(f"Unexpected harness state: {self.state}")
 
-                self.evaluator.record("state.exit", self.state, {"step": step_count})
-                self.lifecycle_hooks.on_after_step(self.state)
+                self.evaluator.record("state.exit", current_state, {"step": step_count})
+                self.lifecycle_hooks.on_after_step(current_state)
                 step_count += 1
         except Exception as error:
             self.lifecycle_hooks.on_error(error)
