@@ -17,6 +17,12 @@ class TestHarness(unittest.TestCase):
         harness = Harness(UpperAgent())
         self.assertEqual(harness.run("starter"), "STARTER")
 
+    def test_can_run_same_harness_twice(self):
+        harness = Harness(UpperAgent())
+
+        self.assertEqual(harness.run("starter"), "STARTER")
+        self.assertEqual(harness.run("again"), "AGAIN")
+
     def test_persists_state_snapshot(self):
         with TemporaryDirectory() as tmp_dir:
             state_path = Path(tmp_dir) / "state.json"

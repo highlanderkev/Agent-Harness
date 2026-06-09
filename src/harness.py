@@ -39,6 +39,7 @@ class Harness:
     def run(self, input_data: Any) -> Any:
         result: Any = None
         step_count = 0
+        self.state = HarnessState.IDLE
         self.lifecycle_hooks.on_session_start()
         try:
             while self.state != HarnessState.TERMINATED:
